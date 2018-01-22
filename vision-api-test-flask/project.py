@@ -19,12 +19,19 @@ session = DBSession()
 @app.route('/transcriptions')
 def transcriptionsIndex():
     transcriptions = session.query(Transcription).all()
-    return render_template('transcriptions.html', transcriptions = transcriptions)
+    return render_template('transcriptions/index.html', transcriptions = transcriptions)
 
 @app.route('/transcriptions/json')
 def transcriptionsIndexJSON():
     transcriptions = session.query(Transcription).all()
     return jsonify(Transcriptions=[t.serialize for t in transcriptions])
+
+@app.route('/transcriptions/new', methods = ['GET', 'POST'])
+def transcriptionsNew():
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template('transcriptions/new.html')
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
