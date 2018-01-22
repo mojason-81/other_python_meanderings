@@ -171,10 +171,10 @@ def main():
     try:
         port = 8080
         server = HTTPServer(('', port), webserverHandler)
-        print "Web server running on port %s" % port
+        print("Web server running on port %s" % port)
         server.serve_forever()
     except KeyboardInterrupt:
-        print "KBI"
+        print("KBI")
         server.socket.close()
 
 if __name__ == '__main__':
