@@ -1,0 +1,22 @@
+<html>
+  <body>
+    <h1>Transcriptions</h1>
+      <div>
+        <ul>
+          {% for transcription in transcriptions %}
+          <li>
+            {{ transcription.filename }}
+          </li>
+          <li>
+            {{ transcription.filepath }}
+          </li>
+          <li>
+            {{ transcription.text }}
+          </li>
+          <br>
+          {% endfor %}
+        </ul>
+      </div>
+      <br>
+  </body>
+</html>
