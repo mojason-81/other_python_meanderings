@@ -17,7 +17,7 @@ session = DBSession()
 
 client = vision.ImageAnnotatorClient()
 
-paths = glob.glob("/Users/jforce/project/python/other_python_meanderings/vision/pics/*")
+paths = glob.glob("/Users/jforce/Pictures/ocr_testing/*")
 files = []
 
 for path in paths:
