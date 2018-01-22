@@ -1,5 +1,7 @@
 # google-vision-test-flask
 
+Seed the database with `seed.py`, run the flask app, and see the parsed results at `localhost:5000/transcriptions` or `localhost:5000/transcriptions/json`
+
 Testing out usage of the google-vision API in Python / Flask
 
 ### NOTE:
