@@ -4,13 +4,13 @@
     <div class="hero-body">
       <div class="container">
         <h1 class="title">Restaurants</h1>
-        <a href="{{ url_for('newRestaurant') }}">New Restaurant</a>
+        <a href="{{ url_for('newRestaurant') }}" class="button is-link">New Restaurant</a>
       </div>
     </div>
   </section>
-  <section class="section columns">
+  <section class="section columns is-multiline">
     {% for restaurant in restaurants %}
-      <div class="column">
+      <div class="column is-one-third">
         <div class="card">
           <div class="card-content">
             <a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class="title">
@@ -19,7 +19,7 @@
           </div>
           <footer class="card-footer">
             <div class="card-footer-item">
-              <a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}" class="button is-info">Edit</a>
+              <a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}" class="button is-warning">Edit</a>
             </div>
             <div class="card-footer-item">
               <a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}" class="button is-danger">Delete</a>
