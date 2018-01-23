@@ -1,19 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Restaurants</h1>
-  <a href="{{ url_for('newRestaurant') }}">New Restaurant</a>
-  <div>
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">Restaurants</h1>
+        <a href="{{ url_for('newRestaurant') }}">New Restaurant</a>
+      </div>
+    </div>
+  </section>
+  <section class="columns">
     {% for restaurant in restaurants %}
-      <p>
-        <a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}">
-          {{ restaurant.name }}
-        </a>
-      </p>
-      <p>
-        <a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}">Edit</a>
-        <a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">Delete</a>
-      </p>
-      <hr>
+    <div class="column">
+      <div class="card">
+        <div class="card-content">
+          <a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class="title">
+            {{ restaurant.name }}
+          </a>
+        </div>
+        <footer class="card-footer">
+          <div class="card-footer-item">
+            <a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}" class="button is-info">Edit</a>
+          </div>
+          <div class="card-footer-item">
+            <a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}" class="button is-danger">Delete</a>
+          </div>
+        </footer>
+      </div>
+    </div>
     {% endfor %}
-  </div>
+  </section>
 {% endblock %}
