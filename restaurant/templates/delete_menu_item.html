@@ -1,5 +1,5 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% block content %}
   <h1>Delete Menu Item</h1>
 
   <form action="{{ url_for('deleteMenuItem',
@@ -10,11 +10,8 @@
     <p>Description:</p>
     <input type='text' size='30' name='desc' value='{{ menu_item.description }}' readonly>
     <p>Price:</p>
-    <input type='text' size='30' name='price' value='{{ menu_item.price }}' readonly><br><br>
+    <input type='text' size='30' name='price' value='{{ menu_item.price }}' readonly>
     <input type='submit' value='Delete'>
-    <a href="{{ url_for('restaurantMenu', restaurant_id = restaurant_id) }}">Cancel</a>
+    <a href="{{ url_for('showMenu', restaurant_id = restaurant_id) }}">Cancel</a>
   </form>
-
-</body>
-</html>
-
+{% endblock %}

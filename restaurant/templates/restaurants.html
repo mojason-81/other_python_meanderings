@@ -1,18 +1,19 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% block content %}
   <h1>Restaurants</h1>
-    <div>
-      <ul>
-        {% for restaurant in restaurants %}
-        <li>
-          <a href="{{ url_for('restaurantMenu', restaurant_id = restaurant.id) }}">
-            {{ restaurant.name }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-    <br>
-</body>
-</html>
-
+  <a href="{{ url_for('newRestaurant') }}">New Restaurant</a>
+  <div>
+    {% for restaurant in restaurants %}
+      <p>
+        <a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}">
+          {{ restaurant.name }}
+        </a>
+      </p>
+      <p>
+        <a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}">Edit</a>
+        <a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">Delete</a>
+      </p>
+      <hr>
+    {% endfor %}
+  </div>
+{% endblock %}

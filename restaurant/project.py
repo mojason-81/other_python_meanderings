@@ -10,51 +10,93 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
-@app.route('/restaurants/<int:restaurant_id>/menu/json')
-def restaurantMenuJSON(restaurant_id):
+@app.route('/restaurants/json')
+def showRestaurantsJSON():
+    restaurants = session.query(Restaurant).all()
+    return jsonify(Restaurants=[r.serialize for r in restaurants])
+
+@app.route('/restaurant/<int:restaurant_id>/menu/json')
+def showMenuJSON(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     items = session.query(MenuItem).filter_by(restaurant_id = restaurant.id)
     return jsonify(MenuItems=[i.serialize for i in items])
 
-@app.route('/restaurants/<int:restaurant_id>/menu/item/<int:menu_item_id>/json')
-def restaurantMenuItemJSON(restaurant_id, menu_item_id):
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_item_id>/json')
+def showMenuItemJSON(restaurant_id, menu_item_id):
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     item = session.query(MenuItem).filter_by(id = menu_item_id).one()
     return jsonify(MenuItem = item.serialize)
 
 @app.route('/')
 @app.route('/restaurants')
-def restaurantsIndex():
+def showRestaurants():
     restaurants = session.query(Restaurant).all()
     return render_template('restaurants.html', restaurants = restaurants)
 
+@app.route('/restaurant/new', methods=['GET', 'POST'])
+def newRestaurant():
+    if request.method == 'POST':
+        restaurant = Restaurant(name = request.form['name'])
+        session.add(restaurant)
+        session.commit()
+        flash('New Restaurant Created')
+        return redirect(url_for('showMenu', restaurant_id = restaurant.id))
+    else:
+        return render_template('new_restaurant.html')
+
+@app.route('/restaurant/<int:restaurant_id>/edit', methods=['GET', 'POST'])
+def editRestaurant(restaurant_id):
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    if request.method == 'POST':
+        restaurant.name = request.form['name']
+        session.add(restaurant)
+        session.commit()
+        flash('Restaurant Successfully Edited')
+        return redirect(url_for('showMenu', restaurant_id = restaurant.id))
+    else:
+        return render_template('edit_restaurant.html',
+                               restaurant = restaurant)
+
+@app.route('/restaurant/<int:restaurant_id>/delete',
+           methods=['GET', 'POST'])
+def deleteRestaurant(restaurant_id):
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    if request.method == 'POST':
+        session.delete(restaurant)
+        session.commit()
+        flash('Restaurant Deleted')
+        return redirect(url_for('showRestaurants'))
+    else:
+        return render_template('delete_restaurant.html',
+                               restaurant = restaurant)
+
+@app.route('/restaurants/<int:restaurant_id>')
 @app.route('/restaurants/<int:restaurant_id>/menu')
-def restaurantMenu(restaurant_id):
+def showMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     items = session.query(MenuItem).filter_by(restaurant_id = restaurant.id)
     return render_template('menu.html', restaurant = restaurant, items = items)
 
-@app.route('/restaurants/<int:restaurant_id>/menu/new-item', methods = ['GET', 'POST'])
+@app.route('/restaurants/<int:restaurant_id>/menu/new', methods = ['GET', 'POST'])
 def newMenuItem(restaurant_id):
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     if request.method == 'POST':
         new_item = MenuItem(name = request.form['name'],
-                           restaurant_id = restaurant_id,
+                           restaurant_id = restaurant.id,
                            price = request.form['price'],
                            description = request.form['description'])
         session.add(new_item)
         session.commit()
         flash("New Item Created")
-        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
-        return render_template('new_menu_item.html', restaurant_id = restaurant_id)
+        return render_template('new_menu_item.html', restaurant = restaurant)
 
-
-@app.route('/restaurants/<int:restaurant_id>/menu/edit-item/<int:menu_item_id>',
+@app.route('/restaurants/<int:restaurant_id>/menu-item/<int:menu_item_id>/edit',
            methods = ['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_item_id):
     menu_item = session.query(MenuItem).filter_by(id = menu_item_id).one()
 
-    print(request.form)
     if request.method == 'POST':
         print(request.form['name'])
         print(request.form['price'])
@@ -71,13 +113,13 @@ def editMenuItem(restaurant_id, menu_item_id):
         session.add(menu_item)
         session.commit()
         flash("Item Successfully Edited")
-        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
         return render_template('edit_menu_item.html',
                                restaurant_id = restaurant_id,
                                menu_item = menu_item)
 
-@app.route('/restaurants/<int:restaurant_id>/menu/delete-item/<int:menu_item_id>',
+@app.route('/restaurants/<int:restaurant_id>/menu-item/<int:menu_item_id>/delete',
            methods = ['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_item_id):
     menu_item = session.query(MenuItem).filter_by(id = menu_item_id).one()
@@ -85,7 +127,7 @@ def deleteMenuItem(restaurant_id, menu_item_id):
         session.delete(menu_item)
         session.commit()
         flash("Item Deleted")
-        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
         return render_template('delete_menu_item.html',
                                restaurant_id = restaurant_id,
