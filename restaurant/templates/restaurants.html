@@ -1,32 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-  <section class="hero is-primary">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">Restaurants</h1>
-        <a href="{{ url_for('newRestaurant') }}">New Restaurant</a>
-      </div>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Restaurants</h1>
+      <a class="button is-link" href="{{ url_for('newRestaurant') }}">New Restaurant</a>
     </div>
-  </section>
-  <section class="section columns">
-    {% for restaurant in restaurants %}
-      <div class="column">
-        <div class="card">
-          <div class="card-content">
-            <a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class="title">
-              {{ restaurant.name }}
-            </a>
-          </div>
-          <footer class="card-footer">
-            <div class="card-footer-item">
-              <a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}" class="button is-info">Edit</a>
-            </div>
-            <div class="card-footer-item">
-              <a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}" class="button is-danger">Delete</a>
-            </div>
-          </footer>
-        </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="columns is-centered is-multiline">
+  {% for restaurant in restaurants %}
+  <div class="column is-one-third">
+    <div class="card">
+      <div class="card-content">
+        <a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class="title">
+          {{ restaurant.name }}
+        </a>
       </div>
-    {% endfor %}
-  </section>
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}" class="button is-info">Edit</a>
+        </div>
+        <div class="card-footer-item">
+          <a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}" class="button is-danger">Delete</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</section>
 {% endblock %}

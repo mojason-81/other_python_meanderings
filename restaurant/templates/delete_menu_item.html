@@ -1,17 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Delete Menu Item</h1>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Delete Menu Item</h1>
+    </div>
+  </div>
+</section>
 
+<section class="section container">
   <form action="{{ url_for('deleteMenuItem',
-                   restaurant_id = restaurant_id,
-                   menu_item_id = menu_item.id) }}" method='post'>
-    <p>Name:</p>
-    <input type='text' size='30' name='name' value='{{ menu_item.name }}' readonly>
-    <p>Description:</p>
-    <input type='text' size='30' name='desc' value='{{ menu_item.description }}' readonly>
-    <p>Price:</p>
-    <input type='text' size='30' name='price' value='{{ menu_item.price }}' readonly>
-    <input type='submit' value='Delete'>
-    <a href="{{ url_for('showMenu', restaurant_id = restaurant_id) }}">Cancel</a>
+    restaurant_id = restaurant_id,
+    menu_item_id = menu_item.id) }}" method="post">
+    <div class="field">
+      <label class="label">Name:</label>
+      <p class="control">
+        <input class="input" type="text" size="30" name="name" value="{{ menu_item.name }}" readonly>
+      </p>
+    </div>
+    <div class="field">
+      <label class="label">Description:</label>
+      <p class="control">
+        <input class="input" type="text" size="30" name="desc" value="{{ menu_item.description }}" readonly>
+      </p>
+    </div>
+    <div class="field">
+      <label class="label">Price:</label>
+      <p class="control">
+        <input class="input" type="text" size="30" name="price" value="{{ menu_item.price }}" readonly>
+      </p>
+    </div>
+    <div class="control">
+      <input class="button" type="submit" value="Delete">
+      <a class="button is-info" href="{{ url_for('showMenu', restaurant_id = restaurant_id) }}">Cancel</a>
+    </div>
   </form>
+</section>
 {% endblock %}

@@ -1,19 +1,39 @@
-<html>
-  <body>
-    <h1>Edit Menu Item</h1>
+{% extends "base.html" %}
+{% block content %}
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Edit Menu Item</h1>
+    </div>
+  </div>
+</section>
 
-    <form action="{{ url_for('editMenuItem',
-                     restaurant_id = restaurant_id,
-                     menu_item_id = menu_item.id) }}" method='post'>
-      <p>Name:</p>
-      <input type='text' size='30' name='name' placeholder='{{ menu_item.name }}'>
-      <p>Description:</p>
-      <input type='text' size='30' name='desc' placeholder='{{ menu_item.description }}'>
-      <p>Price:</p>
-      <input type='text' size='30' name='price' placeholder='{{ menu_item.price }}'>
-      <input type='submit' value='Submit'>
-      <a href="{{ url_for('showMenu', restaurant_id = restaurant_id) }}">Cancel</a>
-    </form>
-
-  </body>
-</html>
+<section class="section container"
+  <form action="{{ url_for('editMenuItem',
+    restaurant_id = restaurant_id,
+    menu_item_id = menu_item.id) }}" method='post'>
+    <div class="field">
+      <label class="label">Name:</label>
+      <p class="control">
+        <input class="input" type='text' size='30' name='name' placeholder='{{ menu_item.name }}'>
+      </p>
+    </div>
+    <div class="field">
+      <label class="label">Description:</label>
+      <p class="control">
+        <input class="input" type='text' size='30' name='desc' placeholder='{{ menu_item.description }}'>
+      </p>
+    </div>
+    <div class="field">
+      <label class="label">Price:</label>
+      <p class="control">
+        <input class="input" type='text' size='30' name='price' placeholder='{{ menu_item.price }}'>
+      </p>
+    </div>
+    <div class="control">
+      <input class="button" type='submit' value='Submit'>
+      <a class="button is-info" href="{{ url_for('showMenu', restaurant_id = restaurant_id) }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

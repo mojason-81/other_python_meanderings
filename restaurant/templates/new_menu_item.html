@@ -1,15 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>New Menu Item</h1>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">New Menu Item</h1>
+    </div>
+  </div>
+</section>
 
+<section class="section container">
   <form action="{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}" method='post'>
-    <p>Name:</p>
-    <input type='text' size='30' name='name'>
-    <p>Price:</p>
-    <input type='text' size='30' name='price'>
-    <p>Description:</p>
-    <input type='text' size='30' name='description'>
-    <input type='submit' value='Create'>
-    <a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}">Cancel</a>
+    <div class="field">
+      <label class="label">Name:</label>
+      <p class="control">
+        <input class="input" type='text' size='30' name='name'>
+      </p>
+      <label class="label">Price:</label>
+      <p class="control">
+        <input class="input" type='text' size='30' name='price'>
+      </p>
+      <label class="label">Description:</label>
+      <p class="control">
+        <input class="input" type='text' size='30' name='description'>
+      </p>
+    </div>
+    <div class="control">
+      <input class="button" type='submit' value='Create'>
+      <a class="button" href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}">Cancel</a>
+    </div>
   </form>
+</section>
 {% endblock %}
