@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-  <section class="hero is-primary">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">{{restaurant.name}}</h1>
-        <a href="{{ url_for('showRestaurants') }}" class="button is-link">Back to Restaurants</a>
-        <a href="{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}" class="button is-link">
-          New Menu Item
-        </a>
-      </div>
-    </div>
-  </section>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">{{restaurant.name}}</h1>
 
-  <section class="section columns is-multiline">
+      <a class="button is-info"href="{{ url_for('showRestaurants') }}">Back to Restaurants</a>
+      <a class="button is-info"href="{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}">
+        New Menu Item
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="columns is-centered is-multiline">
     {% for item in items %}
-      <div class="column is-one-third">
-        <div class="card">
-          <div class="card-content">
-            <p class="title is-4">{{ item.name }}</p>
-            <p class="subtitle">{{ item.description }}</p>
-            <p class="tag is-success">{{ item.price }}</p>
+    <div class="column is-one-third">
+      <div class="card">
+        <div class="card-content">
+          <p class="title is-4">{{ item.name }}</p>
+          <p class="subtitle">{{ item.description }}</p>
+          <p class="tag is-success">{{ item.price }}</p>
+        </div>
+        <div class="card-footer">
+          <div class="card-footer-item">
+            <a class="button is-info" href="{{ url_for('editMenuItem', restaurant_id = restaurant.id, menu_item_id = item.id) }}">Edit</a>
           </div>
-          <footer class="card-footer">
-            <div class="card-footer-item">
-              <a href="{{ url_for('editMenuItem', restaurant_id = restaurant.id, menu_item_id = item.id) }}" class="button is-warning">Edit</a>
-            </div>
-            <div class="card-footer-item">
-              <a href="{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_item_id = item.id) }}" class="button is-danger">Delete</a>
-            </div>
-          </footer>
-          </p>
+          <div class="card-footer-item">
+            <a class="button is-danger" href="{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_item_id = item.id) }}">Delete</a>
+          </div>
         </div>
       </div>
+    </div>
     {% endfor %}
-  </section>
+  </div>
+</section>
 {% endblock %}
