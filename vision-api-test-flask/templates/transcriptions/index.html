@@ -1,39 +1,72 @@
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Vision</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
-  </head>
-  <body>
-    <section class="hero is-primary">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">Transcriptions</h1>
-          <a href="{{ url_for('transcriptionsNew') }}" class="button is-link">New Transcription</a>
-        </div>
-      </div>
-    </section>
-    <section class="section columns is-multiline">
-      <div>
-        {% for transcription in transcriptions %}
-        <div class="column is-12">
-          <div class="card">
-            <div class="card-image">
-              <figure class="image">
-                <img class="img-fluid" style="max-width:900px;" src="/static/{{ transcription.filename }}">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <b>Transcript:</b><br />{{ transcription.text }}
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Transcriptions</h1>
+      <p class="subtilte">put a link here maybe</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="columns is-centered is-multiline">
+    {% for transcript in transcriptions %}
+      <div class="column is-8">
+        <div class="card">
+          <div class="card-image is-flex" style="justify-content:center;">
+            <figure class="image">
+              <img class="img-fluid" style="max-width:900px;" src="/static/{{ transcript.filename }}">
+            </figure>
+          </div>
+          <div class="card-content">
+            <p class="title">Transcript:</p>
+            <p>{{ transcript.text }}</p>
+          </div>
+
+          <div class="card-content">
+            <div class="columns is-multiline">
+              <div class="column">
+                <div class="is-half">
+                  {% if transcript.labels != '' %}
+                    <p class="title is-4">Labels:</p>
+                    {% for label in transcript.labels.split(',') %}
+                      <p style="text-overflow:ellipsis; overflow:hidden; white-space: nowrap;">
+                        {{ label }}
+                      </p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+              <div class="column">
+                <div class="is-half">
+                  {% if transcript.entities!= '' %}
+                    <p class="title is-4">Entities:</p>
+                    {% for entity in transcript.entities.split(',') %}
+                      <p style="text-overflow:ellipsis; overflow:hidden; white-space: nowrap;">
+                        {{ entity }}
+                      </p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
               </div>
             </div>
           </div>
+
+          <div class="card-content">
+            {% if transcript.urls != '' %}
+              <p class="title is-4">URLs:</p>
+              <p style="text-overflow:ellipsis; overflow:hidden; white-space: nowrap;">
+                {% for url in transcript.urls.split(',') %}
+                  <a href="<%= url %>" class="is-link">{{ url }}</a><br />
+                {% endfor %}
+              </p>
+            {% endif %}
+          </div>
         </div>
-        {% endfor %}
       </div>
-    </section>
-  </body>
-</html>
+      {% endfor %}
+  </div>
+</section>
+{% endblock %}
